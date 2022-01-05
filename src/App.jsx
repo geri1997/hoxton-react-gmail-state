@@ -9,7 +9,8 @@ function App() {
     // Use initialEmails for state
     const [emails, setEmails] = useState(initialEmails);
     const [hideRead, setHideRead] = useState(false);
-    const [showStarred,setStarred] = useState(false)
+    const [showStarred, setStarred] = useState(false);
+    const [showInbox, setInbox] = useState(true);
 
     function toggleRead(email) {
         const newEmails = [...emails];
@@ -26,31 +27,29 @@ function App() {
         setEmails(newEmails);
     }
     let emailsToDisplay = emails;
-    function numberOfStarredEmails(){
-    return  emails.reduce(
-        function (values, item) {
-          if (item.starred) {
-            values++
-          }
-          return values
-        },
-        0
-      );
+    function numberOfStarredEmails() {
+        return emails.reduce(function (values, item) {
+            if (item.starred) {
+                values++;
+            }
+            return values;
+        }, 0);
     }
-    function getStarredEmails(emailsToDisplay){
-      return emailsToDisplay.filter(email=>email.starred)
+    function getStarredEmails(emailsToDisplay) {
+        return emailsToDisplay.filter((email) => email.starred);
     }
-    if(showStarred){
-      emailsToDisplay = getStarredEmails(emailsToDisplay);
 
+    if (showStarred) {
+        emailsToDisplay = getStarredEmails(emailsToDisplay);
     }
     if (hideRead) {
-      emailsToDisplay = getReadEmails(emailsToDisplay);
-    } 
-    function toggleHideRead(){
-      setHideRead(!hideRead);
+        emailsToDisplay = getReadEmails(emailsToDisplay);
     }
-    function getReadEmails(emails) {
+    function toggleHideRead() {
+        setHideRead(!hideRead);
+    }
+
+    function getReadEmails(emailsToDisplay) {
         return emailsToDisplay.filter((email) => !email.read);
     }
     return (
@@ -60,17 +59,37 @@ function App() {
                 <ul className="inbox-list">
                     <li
                         className="item active"
-                        // onClick={() => {}}
+                        onClick={() => {
+                            setInbox(true);
+                            // setHideRead(false);
+                            setStarred(false);
+                            document
+                                .querySelector(".inbox-list li:nth-child(1)")
+                                .classList.add("active");
+                            document
+                                .querySelector(".inbox-list li:nth-child(2)")
+                                .classList.remove("active");
+                        }}
                     >
                         <span className="label">Inbox</span>
-                        <span className="count">?</span>
+                        <span className="count">{emails.length}</span>
                     </li>
                     <li
                         className="item"
-                        onClick={() => {setStarred(!showStarred)}}
+                        onClick={() => {
+                            setStarred(true);
+                            // setHideRead(false);
+                            setInbox(false);
+                            document
+                                .querySelector(".inbox-list li:nth-child(2)")
+                                .classList.add("active");
+                            document
+                                .querySelector(".inbox-list li:nth-child(1)")
+                                .classList.remove("active");
+                        }}
                     >
                         <span className="label">Starred</span>
-                        <span className="count">?</span>
+                        <span className="count">{numberOfStarredEmails()}</span>
                     </li>
 
                     <li className="item toggle">
