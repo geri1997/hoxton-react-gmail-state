@@ -14,15 +14,7 @@ function App() {
         const newEmails = [...emails];
 
         newEmails[email.id-1].read=!newEmails[email.id-1].read
-        
-        // newEmails[email.id-1].read=false
 
-        // let finalEmails = newEmails.filter((mail) => {
-        //     return mail.id !== email.id;
-        // });
-        // console.log(finalEmails);
-
-        // finalEmails.push(email);
         setEmails(newEmails);
     }
     return (
@@ -46,7 +38,7 @@ function App() {
                     </li>
 
                     <li className="item toggle">
-                        <label for="hide-read">Hide read</label>
+                        <label htmlFor="hide-read">Hide read</label>
                         <input
                             id="hide-read"
                             type="checkbox"
@@ -59,9 +51,9 @@ function App() {
             <main className="emails">
                 {emails.map((email) => {
                     return (
-                        <section className="single-email">
+                        <section key={email.id} className="single-email">
                             <input
-                                key={email.id}
+                                
                                 type="checkbox"
                                 onChange={()=>toggleRead(email)}
                                 checked={email.read}
