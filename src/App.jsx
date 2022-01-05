@@ -8,15 +8,21 @@ import "./App.css";
 function App() {
     // Use initialEmails for state
     const [emails, setEmails] = useState(initialEmails);
-    
-    
+
     function toggleRead(email) {
         const newEmails = [...emails];
 
-        newEmails[email.id-1].read=!newEmails[email.id-1].read
+        newEmails[email.id - 1].read = !newEmails[email.id - 1].read;
 
         setEmails(newEmails);
     }
+    function toggleStar(email) {
+      const newEmails = [...emails];
+
+      newEmails[email.id - 1].starred = !newEmails[email.id - 1].starred;
+
+      setEmails(newEmails);
+  }
     return (
         <div className="app">
             <Header />
@@ -53,15 +59,15 @@ function App() {
                     return (
                         <section key={email.id} className="single-email">
                             <input
-                                
                                 type="checkbox"
-                                onChange={()=>toggleRead(email)}
+                                onChange={() => toggleRead(email)}
                                 checked={email.read}
                                 name=""
                                 id=""
                             />
                             <input
                                 type="checkbox"
+                                onChange={() => toggleStar(email)}
                                 checked={email.starred}
                                 name=""
                                 className="star"
