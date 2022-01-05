@@ -8,6 +8,7 @@ import "./App.css";
 function App() {
     // Use initialEmails for state
     const [emails, setEmails] = useState(initialEmails);
+    const [hideRead, setHideRead] = useState(true);
 
     function toggleRead(email) {
         const newEmails = [...emails];
@@ -17,12 +18,22 @@ function App() {
         setEmails(newEmails);
     }
     function toggleStar(email) {
-      const newEmails = [...emails];
+        const newEmails = [...emails];
 
-      newEmails[email.id - 1].starred = !newEmails[email.id - 1].starred;
+        newEmails[email.id - 1].starred = !newEmails[email.id - 1].starred;
 
-      setEmails(newEmails);
-  }
+        setEmails(newEmails);
+    }
+    let emailsToDisplay = emails;
+    if (hideRead) {
+      emailsToDisplay = getReadEmails(emails);
+    } 
+    function toggleHideRead(){
+      setHideRead(!hideRead);
+    }
+    function getReadEmails(emails) {
+        return emails.filter((email) => !email.read);
+    }
     return (
         <div className="app">
             <Header />
@@ -48,14 +59,14 @@ function App() {
                         <input
                             id="hide-read"
                             type="checkbox"
-                            checked={false}
-                            // onChange={() => {}}
+                            checked={hideRead}
+                            onChange={() => toggleHideRead()}
                         />
                     </li>
                 </ul>
             </nav>
             <main className="emails">
-                {emails.map((email) => {
+                {emailsToDisplay.map((email) => {
                     return (
                         <section key={email.id} className="single-email">
                             <input
