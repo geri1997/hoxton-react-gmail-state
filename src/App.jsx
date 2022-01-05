@@ -8,7 +8,8 @@ import "./App.css";
 function App() {
     // Use initialEmails for state
     const [emails, setEmails] = useState(initialEmails);
-    const [hideRead, setHideRead] = useState(true);
+    const [hideRead, setHideRead] = useState(false);
+    const [showStarred,setStarred] = useState(false)
 
     function toggleRead(email) {
         const newEmails = [...emails];
@@ -25,14 +26,32 @@ function App() {
         setEmails(newEmails);
     }
     let emailsToDisplay = emails;
+    function numberOfStarredEmails(){
+    return  emails.reduce(
+        function (values, item) {
+          if (item.starred) {
+            values++
+          }
+          return values
+        },
+        0
+      );
+    }
+    function getStarredEmails(emailsToDisplay){
+      return emailsToDisplay.filter(email=>email.starred)
+    }
+    if(showStarred){
+      emailsToDisplay = getStarredEmails(emailsToDisplay);
+
+    }
     if (hideRead) {
-      emailsToDisplay = getReadEmails(emails);
+      emailsToDisplay = getReadEmails(emailsToDisplay);
     } 
     function toggleHideRead(){
       setHideRead(!hideRead);
     }
     function getReadEmails(emails) {
-        return emails.filter((email) => !email.read);
+        return emailsToDisplay.filter((email) => !email.read);
     }
     return (
         <div className="app">
@@ -48,7 +67,7 @@ function App() {
                     </li>
                     <li
                         className="item"
-                        // onClick={() => {}}
+                        onClick={() => {setStarred(!showStarred)}}
                     >
                         <span className="label">Starred</span>
                         <span className="count">?</span>
