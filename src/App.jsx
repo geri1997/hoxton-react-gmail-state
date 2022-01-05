@@ -8,19 +8,23 @@ import "./App.css";
 function App() {
     // Use initialEmails for state
     const [emails, setEmails] = useState(initialEmails);
+    
+    
+    function toggleRead(email) {
+        const newEmails = [...emails];
 
-    // function toggleRead(email) {
-    //     const newEmails = [...emails];
-    //     console.log( newEmails);
-    //     email.starred = !email.starred;
-    //     let finalEmails = newEmails.filter((mail) => {
-    //         return mail.id !== email.id;
-    //     });
-    //     console.log(finalEmails);
+        newEmails[email.id-1].read=!newEmails[email.id-1].read
+        
+        // newEmails[email.id-1].read=false
 
-    //     finalEmails.push(email);
-    //     setEmails(finalEmails);
-    // }
+        // let finalEmails = newEmails.filter((mail) => {
+        //     return mail.id !== email.id;
+        // });
+        // console.log(finalEmails);
+
+        // finalEmails.push(email);
+        setEmails(newEmails);
+    }
     return (
         <div className="app">
             <Header />
@@ -59,7 +63,7 @@ function App() {
                             <input
                                 key={email.id}
                                 type="checkbox"
-                                // onChange={toggleRead}
+                                onChange={()=>toggleRead(email)}
                                 checked={email.read}
                                 name=""
                                 id=""
